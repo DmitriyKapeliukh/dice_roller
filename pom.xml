@@ -9,12 +9,12 @@
 	<version>1.0-SNAPSHOT</version>
 
 	<properties>
-		<serenity.version>2.0.80</serenity.version>
-		<serenity.maven.version>2.0.80</serenity.maven.version>
+		<serenity.version>2.0.27</serenity.version>
 		<slf4j.version>1.6.1</slf4j.version>
 		<maven.failsafe.plugin.version>2.18</maven.failsafe.plugin.version>
 		<maven.compiler.plugin.version>3.2</maven.compiler.plugin.version>
 		<java.version>1.8</java.version>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 	</properties>
 
 	<dependencies>
@@ -52,13 +52,16 @@
 	<build>
 		<plugins>
 			<plugin>
-				<artifactId>maven-failsafe-plugin</artifactId>
-				<version>${maven.failsafe.plugin.version}</version>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.19.1</version>
 				<configuration>
-					<includes>
-						<include>**/*.java</include>
-					</includes>
+					<skip>true</skip>
 				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<version>2.22.0</version>
 				<executions>
 					<execution>
 						<goals>
@@ -67,10 +70,16 @@
 						</goals>
 					</execution>
 				</executions>
+				<configuration>
+					<includes>
+						<include>*Test.java</include>
+					</includes>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.6.2</version>
 				<configuration>
 					<source>${java.version}</source>
 					<target>${java.version}</target>
@@ -79,7 +88,7 @@
 			<plugin>
 				<groupId>net.serenity-bdd.maven.plugins</groupId>
 				<artifactId>serenity-maven-plugin</artifactId>
-				<version>${serenity.maven.version}</version>
+				<version>1.5.8</version>
 				<dependencies>
 					<dependency>
 						<groupId>net.serenity-bdd</groupId>

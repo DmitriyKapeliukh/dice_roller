@@ -4,6 +4,7 @@ import dice.steps.DiceSteps;
 import net.serenitybdd.junit.runners.SerenityParameterizedRunner;
 import net.serenitybdd.junit.runners.SerenityRunner;
 import net.thucydides.core.annotations.Steps;
+import net.thucydides.junit.annotations.Concurrent;
 import net.thucydides.junit.annotations.TestData;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,6 +14,7 @@ import java.util.Collection;
 import java.util.List;
 
 @RunWith(SerenityParameterizedRunner.class)
+@Concurrent
 public class DiceTest {
 
     @TestData
@@ -32,8 +34,8 @@ public class DiceTest {
     private DiceSteps diceSteps;
 
     @Test
-    public void verifyGaussianDistribution() {
-        List<Integer> facesResult = diceSteps.rollsOfDice(rolls);
+    public void verifyGaussianDistributionTest() {
+        int[] facesResult = diceSteps.rollsOfDice(rolls);
         diceSteps.verifyGaussianDistribution(facesResult);
     }
 }
