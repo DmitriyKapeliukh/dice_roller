@@ -9,7 +9,7 @@ import lombok.Getter;
 public enum Namespace {
 
     ROLL("/api/roll"),
-    MULTI_ROLL("api/roll?dices=%d&faces=%d&rolls=%d");
+    MULTI_ROLL("/api/roll?dices=%d&faces=%d&rolls=%d");
 
     private String name;
 }

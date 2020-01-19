@@ -38,4 +38,9 @@ public class DiceTest {
         int[] facesResult = diceSteps.rollsOfDice(rolls);
         diceSteps.verifyGaussianDistribution(facesResult);
     }
+
+    @Test
+    public void verifyGaussianDistributionForTwoDiceTest() {
+        int[] facesResult = diceSteps.rollsOfTwoDice(rolls);
+    }
 }
