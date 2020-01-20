@@ -12,6 +12,7 @@ import org.junit.runner.RunWith;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 @RunWith(SerenityParameterizedRunner.class)
 @Concurrent
@@ -41,6 +42,7 @@ public class DiceTest {
 
     @Test
     public void verifyGaussianDistributionForTwoDiceTest() {
-        int[] facesResult = diceSteps.rollsOfTwoDice(rolls);
+        Map<Integer, Integer> result = diceSteps.rollsOfTwoDice(rolls);
+        diceSteps.addTwoDiceRollResultToReport(result);
     }
 }
