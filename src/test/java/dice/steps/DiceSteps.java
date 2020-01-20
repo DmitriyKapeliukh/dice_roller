@@ -1,6 +1,7 @@
 package dice.steps;
 
 import common.Namespace;
+import io.restassured.response.Response;
 import io.vavr.collection.Array;
 import net.serenitybdd.rest.SerenityRest;
 import net.thucydides.core.annotations.Step;
@@ -10,6 +11,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -18,20 +20,20 @@ public class DiceSteps {
 
     private static final String API_HOST = "http://localhost:8888";
 
-    private int getDiceRollResult() {
-        return Integer.parseInt(SerenityRest.given().get(API_HOST + Namespace.ROLL.getName())
+    private Response getDiceRollResult(final String namespace) {
+        return SerenityRest.given().get(API_HOST + namespace)
                 .then().assertThat().statusCode(200)
-                .extract().response().asString());
+                .extract().response();
     }
 
     @Step
     public int[] rollsOfDice(final int rollsCount) {
         int[] result = new int[rollsCount];
         for (int i = 0; i < rollsCount; i++) {
-            result[i] = getDiceRollResult();
+            result[i] = Integer.parseInt(getDiceRollResult(Namespace.ROLL.getName()).asString());
         }
 
-        return getListSortedResult(result);
+        return getListSortedResult(6, result);
     }
 
     @Step
@@ -46,19 +48,41 @@ public class DiceSteps {
         return (double) ((b - a) * 100) / a;
     }
 
-    @NotNull
-    private int getCountOfFace(final int[] result, final int face) {
-        return Arrays.stream(result)
-                .filter(s -> s == face)
-                .boxed()
-                .toArray(Integer[]::new).length;
+    @Step
+    public int[] rollsOfTwoDice(final int rollsCount) {
+        int[] result = new int[rollsCount];
+        for (int i = 0; i < rollsCount; i++) {
+            Response response = getDiceRollResult(getMultiDiceNamespace(2, 6, 1));
+
+            result[i] = getSumFromMultipleDices(response);
+        }
+        return getListSortedResult(12, result);
+    }
+
+    private int getSumFromMultipleDices(final Response response) {
+        return Arrays.stream(response.asString().split(" "))
+                .mapToInt(Integer::parseInt)
+                .sum();
 
     }
 
-    private int[] getListSortedResult(final int[] diceResult) {
-        int[] countDiceFaces = new int[6];
-        for (int i = 0; i < 6; i++) {
-            countDiceFaces[i] = getCountOfFace(diceResult, i);
+    private String getMultiDiceNamespace(final int dices, final int faces, final int rolls) {
+        return String.format(Namespace.MULTI_ROLL.getName(), dices, faces, rolls);
+    }
+
+    @NotNull
+    private int getCountOfFace(final int[] result, final int face) {
+        return IntStream.of(result)
+                .filter(s -> s == face)
+                .toArray().length;
+
+    }
+
+    //TODO fix two dices
+    private int[] getListSortedResult(final int sumFaces, final int[] diceResult) {
+        int[] countDiceFaces = new int[sumFaces];
+        for (int i = 0; i < sumFaces; i++) {
+            countDiceFaces[i] = getCountOfFace(diceResult, i + 2);
         }
         Arrays.sort(countDiceFaces);
         return countDiceFaces;
