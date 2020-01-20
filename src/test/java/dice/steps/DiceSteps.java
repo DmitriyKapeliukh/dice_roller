@@ -3,7 +3,6 @@ package dice.steps;
 import common.Namespace;
 import io.restassured.response.Response;
 import net.serenitybdd.core.Serenity;
-import net.serenitybdd.rest.SerenityRest;
 import net.thucydides.core.annotations.Step;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
@@ -13,6 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.IntStream;
 
+import static io.restassured.RestAssured.given;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.is;
@@ -91,13 +91,13 @@ public class DiceSteps {
     }
 
     private Response getDiceRollResult(final String namespace) {
-        return SerenityRest.given().get(API_HOST + namespace)
+        return given().get(API_HOST + namespace)
                 .then().assertThat().statusCode(200)
                 .extract().response();
     }
 
     private int getSumFromMultipleDices(final Response response) {
-        return Arrays.stream(response.asString().split(StringUtils.EMPTY))
+        return Arrays.stream(response.asString().split(StringUtils.SPACE))
                 .mapToInt(Integer::parseInt)
                 .sum();
     }

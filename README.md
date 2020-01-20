@@ -11,3 +11,11 @@ because they have only one out, "1" + "1" and "6" + "6". Accordingly "7" are mos
 the are 6 outs, "1" + "6", "2" + "5", "3" + "4", "5" + "2", "6" + "1".
 
 # ![Two dice deviation chart](src/main/resources/Dice_Distribution_(bar).png)
+
+### Run Tests
+
+mvn clean verify
+
+### Report
+
+${user.dir}/target/site/serenity/index.html
