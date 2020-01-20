@@ -5,6 +5,7 @@ import io.restassured.response.Response;
 import net.serenitybdd.core.Serenity;
 import net.serenitybdd.rest.SerenityRest;
 import net.thucydides.core.annotations.Step;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
@@ -13,6 +14,8 @@ import java.util.Map;
 import java.util.stream.IntStream;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.is;
 
 public class DiceSteps {
 
@@ -42,9 +45,9 @@ public class DiceSteps {
 
     @Step
     public void verifyGaussianDistribution(final int[] sortedFacesResult) {
-        double percentDiff = getDiff(sortedFacesResult[0], sortedFacesResult.length - 1);
+        int percentDiff = getDiff(sortedFacesResult[0], sortedFacesResult[sortedFacesResult.length - 1]);
 
-        assertThat("The dice roll distribution more than 5% ", 5.0 < percentDiff);
+        assertThat("The dice roll distribution more than 5% ", 5, is(greaterThan(percentDiff)));
     }
 
     /**
@@ -56,8 +59,8 @@ public class DiceSteps {
      */
 
     @Step
-    public double getDiff(final int a, final int b) {
-        return (double) ((b - a) * 100) / a;
+    public int getDiff(final int a, final int b) {
+        return ((b - a) * 100) / a;
     }
 
     /**
@@ -94,10 +97,9 @@ public class DiceSteps {
     }
 
     private int getSumFromMultipleDices(final Response response) {
-        return Arrays.stream(response.asString().split(" "))
+        return Arrays.stream(response.asString().split(StringUtils.EMPTY))
                 .mapToInt(Integer::parseInt)
                 .sum();
-
     }
 
     private String getMultiDiceNamespace(final int dices, final int faces, final int rolls) {
