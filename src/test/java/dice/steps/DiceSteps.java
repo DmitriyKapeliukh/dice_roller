@@ -2,21 +2,15 @@ package dice.steps;
 
 import common.Namespace;
 import io.restassured.response.Response;
-import io.vavr.collection.Array;
 import net.serenitybdd.core.Serenity;
-import net.serenitybdd.core.SerenityReports;
 import net.serenitybdd.rest.SerenityRest;
 import net.thucydides.core.annotations.Step;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -26,6 +20,7 @@ public class DiceSteps {
 
     /**
      * get rolls of dice result
+     *
      * @param rollsCount rolls count
      * @return array with result
      */
@@ -36,12 +31,12 @@ public class DiceSteps {
         for (int i = 0; i < rollsCount; i++) {
             result[i] = Integer.parseInt(getDiceRollResult(Namespace.ROLL.getName()).asString());
         }
-
         return getListSortedResult(6, result);
     }
 
     /**
      * verify that result of one dice distribution with in 5%
+     *
      * @param sortedFacesResult sorted array with dice result
      */
 
@@ -54,6 +49,7 @@ public class DiceSteps {
 
     /**
      * get difference between two int in percent
+     *
      * @param a num a
      * @param b num b
      * @return difference in percent
@@ -65,7 +61,6 @@ public class DiceSteps {
     }
 
     /**
-     *
      * @param rollsCount get rolls of tow dice result
      * @return map of roll two side sum result
      */
@@ -83,6 +78,7 @@ public class DiceSteps {
 
     /**
      * add two dice rolls result into the report
+     *
      * @param twoDiceResult two dice rolls result
      */
 
