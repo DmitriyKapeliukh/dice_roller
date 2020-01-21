@@ -19,8 +19,6 @@ import static org.hamcrest.Matchers.is;
 
 public class DiceSteps {
 
-    private static final String API_HOST = "http://localhost:8888";
-
     /**
      * get rolls of dice result
      *
@@ -91,7 +89,7 @@ public class DiceSteps {
     }
 
     private Response getDiceRollResult(final String namespace) {
-        return given().get(API_HOST + namespace)
+        return given().get(System.getProperty("apiHost") + namespace)
                 .then().assertThat().statusCode(200)
                 .extract().response();
     }

@@ -74,6 +74,9 @@
 					<includes>
 						<include>*Test.java</include>
 					</includes>
+					<systemPropertyVariables>
+						<apiHost>http://localhost:8888</apiHost>
+					</systemPropertyVariables>
 				</configuration>
 			</plugin>
 			<plugin>
